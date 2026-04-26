@@ -37,7 +37,7 @@
   });
 
   // ---------- COUNTDOWN ----------
-  const TARGET = new Date("2026-05-30T06:15:00").getTime();
+  const TARGET = new Date("2026-05-15T07:30:00").getTime();
   const cdEl = document.getElementById("countdown");
   if (cdEl) {
       const dEl = cdEl.querySelector("[data-d]");
