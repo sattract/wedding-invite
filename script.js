@@ -84,7 +84,7 @@
           bg: "linear-gradient(135deg, #2b2547 0%, #4a3d75 60%, #6b5fa0 100%)",
       },
       {
-          key: "Vivaah", name: "Reception", day: "Day 02",
+          key: "Vivaah", name: "Vivaah", day: "Day 02",
           date: "Friday, 15 May 2026", time: "9:00 PM Onwards",
           theme: "Indo-Western Elegance", venue: "Grand Amara by Gurmeet",
           address: "Karkardooma court, Delhi",
