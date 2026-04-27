@@ -104,7 +104,7 @@
           schedule: [
               { time: "08:00 AM", title: "Milni & Tea" },
               { time: "09:00 AM", title: "Kangana" },
-              { time: "9:30 PM", title: "Angoothi ka khel" },
+              { time: "10:30 AM", title: "Angoothi ka khel" },
           ],
       },
   ];
