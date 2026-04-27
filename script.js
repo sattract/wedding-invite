@@ -161,33 +161,65 @@
       });
   });
 
-  // ---------- RSVP SUBMIT ----------
+  // ---------- RSVP SUBMIT (FORMSPREE AJAX) ----------
   const form = document.getElementById("rsvp-form");
   const toast = document.getElementById("toast");
+
   if (form) {
-      form.addEventListener("submit", (e) => {
-          const action = form.getAttribute("action") || "";
-          if (action.includes("REPLACE_WITH_YOUR_FORM_ID")) {
-              e.preventDefault();
-              if (toast) {
-                  toast.hidden = false;
-                  toast.textContent = "Demo mode — connect your Google Form ID in index.html to enable submissions.";
-              }
-              form.reset();
-              document.querySelectorAll(".event-check.checked").forEach((el) => el.classList.remove("checked"));
-              setTimeout(() => { if(toast) toast.hidden = true; }, 5000);
-              return;
+      form.addEventListener("submit", async (e) => {
+          e.preventDefault(); // Stop the page from redirecting to Formspree
+          
+          const submitBtn = document.getElementById("rsvp-submit");
+          const formData = new FormData(form);
+          
+          // Visual feedback while waiting for the API
+          if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.textContent = "Sending...";
           }
-          // Form posts to hidden iframe; show toast after a beat
-          setTimeout(() => {
+
+          try {
+              // Send the POST request to Formspree
+              const response = await fetch(form.action, {
+                  method: 'POST',
+                  body: formData,
+                  headers: {
+                      'Accept': 'application/json'
+                  }
+              });
+
+              if (response.ok) {
+                  // Success!
+                  if (toast) {
+                      toast.hidden = false;
+                      toast.style.color = "var(--w-olive)"; // Reset to green/olive
+                      toast.textContent = "Thank you! Your RSVP has been received.";
+                  }
+                  form.reset();
+                  document.querySelectorAll(".event-check.checked").forEach((el) => el.classList.remove("checked"));
+              } else {
+                  // Server returned an error (e.g., 400 Bad Request)
+                  if (toast) {
+                      toast.hidden = false;
+                      toast.style.color = "red";
+                      toast.textContent = "Oops! There was a problem submitting your form.";
+                  }
+              }
+          } catch (error) {
+              // Network error (e.g., user is offline)
               if (toast) {
                   toast.hidden = false;
-                  toast.textContent = "Thank you! Your RSVP has been received.";
+                  toast.style.color = "red";
+                  toast.textContent = "Network error. Please check your connection.";
               }
-              form.reset();
-              document.querySelectorAll(".event-check.checked").forEach((el) => el.classList.remove("checked"));
+          } finally {
+              // Reset the button state
+              if (submitBtn) {
+                  submitBtn.disabled = false;
+                  submitBtn.textContent = "Confirm RSVP";
+              }
               setTimeout(() => { if(toast) toast.hidden = true; }, 5000);
-          }, 700);
+          }
       });
   }
 })();
